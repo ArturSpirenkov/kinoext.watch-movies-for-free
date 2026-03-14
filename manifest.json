@@ -1,0 +1,13 @@
+{
+  "manifest_version": 3,
+  "name": "КиноПоиск — Смотреть фильм",
+  "version": "1.0",
+  "description": "Добавляет кнопку «Смотреть фильм» на КиноПоиске с переходом на sspoisk.ru",
+  "content_scripts": [
+    {
+      "matches": ["https://www.kinopoisk.ru/*"],
+      "js": ["content.js"],
+      "css": ["content.css"]
+    }
+  ]
+}
