@@ -1,8 +1,14 @@
 {
   "manifest_version": 3,
-  "name": "КиноПоиск — Смотреть фильм",
+  "author": "sprnkv.art",
+  "name": "free-kinopoisk",
   "version": "1.0",
   "description": "Добавляет кнопку «Смотреть фильм» на КиноПоиске с переходом на sspoisk.ru",
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "free-kinopoisk@sprnkv.art"
+    }
+  },
   "content_scripts": [
     {
       "matches": ["https://www.kinopoisk.ru/*"],
