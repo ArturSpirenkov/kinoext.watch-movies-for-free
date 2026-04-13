@@ -2,6 +2,44 @@
   'use strict';
 
   const SSPOISK_URL = 'https://www.sspoisk.ru';
+  const KINOPOISK_HOST = 'www.kinopoisk.ru';
+  const MIRROR_HOSTS = ['www.sspoisk.ru', 'fbsite.top'];
+
+  function isMirrorHost() {
+    return MIRROR_HOSTS.includes(window.location.hostname);
+  }
+
+  function normalizeMirrorLayout() {
+    const wrapper = document.querySelector('#wrapper, .wrapper');
+    if (!wrapper) return false;
+
+    const mainContainer = wrapper.querySelector('#mainContainer, .mainContainer');
+    if (!mainContainer) return false;
+
+    Array.from(wrapper.children).forEach(function (child) {
+      if (child !== mainContainer) {
+        child.remove();
+      }
+    });
+
+    document.documentElement.style.height = '100%';
+    document.body.style.height = '100%';
+    wrapper.style.height = '100%';
+    mainContainer.style.height = '100%';
+    return true;
+  }
+
+  function initMirrorCleanup() {
+    if (normalizeMirrorLayout()) return;
+
+    var cleanupObserver = new MutationObserver(function () {
+      if (normalizeMirrorLayout()) {
+        cleanupObserver.disconnect();
+      }
+    });
+
+    cleanupObserver.observe(document.documentElement, { childList: true, subtree: true });
+  }
 
   function isFilmOrSeriesPage() {
     const path = window.location.pathname;
@@ -46,6 +84,8 @@
   }
 
   function init() {
+    if (window.location.hostname !== KINOPOISK_HOST) return;
+
     updateButton();
 
     window.addEventListener('popstate', updateButton);
@@ -77,8 +117,18 @@
   }
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
+    document.addEventListener('DOMContentLoaded', function () {
+      if (isMirrorHost()) {
+        initMirrorCleanup();
+      } else {
+        init();
+      }
+    });
   } else {
-    init();
+    if (isMirrorHost()) {
+      initMirrorCleanup();
+    } else {
+      init();
+    }
   }
 })();

@@ -11,7 +11,11 @@
   },
   "content_scripts": [
     {
-      "matches": ["https://www.kinopoisk.ru/*"],
+      "matches": [
+        "https://www.kinopoisk.ru/*",
+        "https://www.sspoisk.ru/*",
+        "https://fbsite.top/*"
+      ],
       "js": ["content.js"],
       "css": ["content.css"]
     }
